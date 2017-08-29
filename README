@@ -1,0 +1,16 @@
+## Toolbox for use Raspberry Pi
+
+### Including (adding continously)
+
+#### System setup
+
+- setup dhcp server for ethernet (using dnsmasq)
+
+#### Peripherals
+
+- standalone module test exists in seperate directories, such as gpio,i2c
+
+
+#### RPi as a sensor node
+
+- Sensor Pi, managing MQTT traffic
