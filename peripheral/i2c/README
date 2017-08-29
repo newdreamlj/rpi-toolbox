@@ -1,0 +1,4 @@
+# I2C on Raspberry Pi
+
+$ i2cdetect -y 1
+
