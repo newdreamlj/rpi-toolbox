@@ -1,0 +1,35 @@
+
+01. Install dnsmasq
+
+$ sudo apt-get update
+$ sudo apt-get install dnsmasq
+
+
+02. Set a static IP
+
+$ sudo vim /etc/network/interfaces
+the original "iface eth0 inet dchp" set it a DHCP client
+change to a fixed ip address
+"
+auto eth0
+iface eth0 inet static
+address 192.168.11.1
+netmask 255.255.255.0
+"
+$ sudo service networking restart
+
+
+03. Configure DHCP server software
+
+$ cd /etc
+$ sudo mv dnsmasq.conf dnsmasq.default
+$ sudo vim dnsmasq.conf
+
+copy the following to dnsmasq.conf
+"
+interface=eth0
+dhcp-range=192.168.11.2,192.168.11.254,255.255.255.0,12h
+"
+$ sudo service dnsmasq restart
+
+
