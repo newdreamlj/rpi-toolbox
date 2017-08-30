@@ -37,10 +37,10 @@ def co2_read(ser):
 
 if __name__ == "__main__":
     ser = co2_init()
-    time.sleep(10)
+    time.sleep(0.1)
     print "CO2 = %d" % co2_read(ser)
-    time.sleep(10)
+    time.sleep(1)
     print "CO2 = %d" % co2_read(ser)
-    time.sleep(10)
+    time.sleep(1)
     print "CO2 = %d" % co2_read(ser)
     ser.close()
