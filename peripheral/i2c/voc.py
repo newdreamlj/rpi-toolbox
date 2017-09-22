@@ -35,16 +35,19 @@ def tvoc_read():
     # for i in range(9):
     #     data[i] = bus.read_byte(VOC_ADDR)
     pi = pigpio.pi()
+    if not pi.connected:
+         return -1
     handle = pi.i2c_open(BUS, VOC_ADDR)
     (count, data) = pi.i2c_read_device(handle, 9)
     pi.i2c_close(handle)
-    pi.stop()
+    time.sleep(0.01)
 
     # pred = ((data[0]) << 8) + (data[1])
     status = (data[2])
     # resistance = ((data[3]) << 24) + ((data[4]) << 16) + ((data[5]) << 8) + (data[6])
     tvoc = ((data[7]) << 8) + (data[8])
     
+    pi.stop()
     if status!=0:
         tvoc = -status
     return status, tvoc

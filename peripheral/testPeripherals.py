@@ -10,6 +10,8 @@ import i2c.voc as VOC
 import i2c.sht30 as SHT30
 import uart.pm25 as PM25
 import uart.co2 as CO2
+import i2c.light as LIGHT
+import gpio.pir as PIR
 
 def sensor_loop():
     status , tvoc = VOC.tvoc_read()
@@ -28,7 +30,11 @@ def sensor_loop():
     # print "CO2 = %d" % co2
     CO2.co2_close(serial)
 
-    print "tvoc=%d T=%.2f H=%.2f%% PM2.5=%d CO2=%d" % (tvoc,temp,humid,pm25,co2)
+    light = LIGHT.light_read()
+
+    human_detected = PIR.pir_read()    
+
+    print "tvoc=%d T=%.2f H=%.2f%% PM2.5=%d CO2=%d light=%d human=%d" % (tvoc,temp,humid,pm25,co2,light,human_detected)
 
 if __name__ == "__main__":
 

@@ -17,6 +17,8 @@ SHT_ADDR = 0x44
 
 def sht_read():
     pi = pigpio.pi()
+    if not pi.connected:
+        return -1
     handle = pi.i2c_open(BUS, SHT_ADDR)
     # pi.write_i2c_block_data(SHT_ADDR, 0x24, [0x00])
     # time.sleep(0.01)
@@ -27,27 +29,15 @@ def sht_read():
     humid = ((( (data[3]) * 256.0 + (data[4])) * 100 ) / 65535.0)
 
     pi.i2c_close(handle)
+    time.sleep(0.01)
     pi.stop()
 
     return temp,humid
 
 if __name__ == "__main__":
-    temp,humid = sht_read()
-    print "T = %.2f, H = %.2f%%" % (temp,humid)
 
-    time.sleep(1)
-    temp,humid = sht_read()
-    print "T = %.2f, H = %.2f%%" % (temp,humid)
-
-    time.sleep(1)
-    temp,humid = sht_read()
-    print "T = %.2f, H = %.2f%%" % (temp,humid)
-
-    time.sleep(1)
-    temp,humid = sht_read()
-    print "T = %.2f, H = %.2f%%" % (temp,humid)
-
-    time.sleep(1)
-    temp,humid = sht_read()
-    print "T = %.2f, H = %.2f%%" % (temp,humid)
+    while 1:
+        temp,humid = sht_read()
+        print "T = %.2f, H = %.2f%%" % (temp,humid)
+        time.sleep(1)
 
