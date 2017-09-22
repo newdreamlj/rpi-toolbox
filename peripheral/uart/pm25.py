@@ -34,7 +34,7 @@ def pm25_init():
 	stopbits=serial.STOPBITS_ONE,
 	bytesize=serial.EIGHTBITS,
 	timeout=1)
-    
+    time.sleep(0.01)    
     ser.flushInput()
     return ser
 

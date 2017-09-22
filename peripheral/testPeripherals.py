@@ -28,11 +28,7 @@ def sensor_loop():
     # print "CO2 = %d" % co2
     CO2.co2_close(serial)
 
-    print "tvoc = %d" % tvoc
-    print "T = %.2f, H = %.2f%%" % (temp,humid)
-    print "PM2.5 = %d" % pm25
-    print "CO2 = %d" % co2
-    print "\n\n"
+    print "tvoc=%d T=%.2f H=%.2f%% PM2.5=%d CO2=%d" % (tvoc,temp,humid,pm25,co2)
 
 if __name__ == "__main__":
 
@@ -42,5 +38,5 @@ if __name__ == "__main__":
 	except Exception,e:
             print e
             # client.reinitialise()
-        time.sleep(2)
+        time.sleep(1.1)
 

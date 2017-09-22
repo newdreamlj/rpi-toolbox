@@ -27,6 +27,7 @@ def sht_read():
     humid = ((( (data[3]) * 256.0 + (data[4])) * 100 ) / 65535.0)
 
     pi.i2c_close(handle)
+    pi.stop()
 
     return temp,humid
 
