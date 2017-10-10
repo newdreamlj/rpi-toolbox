@@ -34,8 +34,9 @@ def co2_init():
 	stopbits=serial.STOPBITS_ONE,
 	bytesize=serial.EIGHTBITS,
 	timeout=1)
-    time.sleep(0.01)
+    time.sleep(0.02)
     ser.flushInput()
+    time.sleep(0.02)
     return ser
 
 def co2_read(ser):
@@ -44,9 +45,19 @@ def co2_read(ser):
         ser.write(cmd)
         time.sleep(0.01)
         response = ser.read(12)  # read 3 lines of serial port data
-	co2 = (ord(response[4])<<8) + ord(response[5])
-        # print "CO2 = %d" % co2
-        return co2
+
+        crc = (ord(response[10])<<8) + ord(response[11])
+        crcx = 0
+        for i in range(10):
+            crcx = crcx + ord(response[i])
+        
+        if crc != crcx:
+            print "Wrong CRC (%d but %D)" %(crc,crcx)
+            return -1
+        else:
+            co2 = (ord(response[4])<<8) + ord(response[5])
+            # print "CO2 = %d" % co2
+            return co2
     except Exception, e:
 	print e
 	ser.close()

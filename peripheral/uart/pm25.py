@@ -34,16 +34,27 @@ def pm25_init():
 	stopbits=serial.STOPBITS_ONE,
 	bytesize=serial.EIGHTBITS,
 	timeout=1)
-    time.sleep(0.01)    
+    time.sleep(0.02)    
     ser.flushInput()
+    time.sleep(0.02)
     return ser
 
 def pm25_read(ser):
     try:                        # stops program failing if no serial data
         response = ser.read(32)  # read 3 lines of serial port data
-	pm25 = (ord(response[12])<<8) + ord(response[13])
-        # print "CO2 = %d" % pm25
-        return pm25
+
+        pm25 = (ord(response[12])<<8) + ord(response[13])
+        crc = (ord(response[30])<<8) + ord(response[31])
+        crcx = 0
+        for i in range(30):
+            crcx = crcx + ord(response[i])
+        if crc != crcx:
+            print "Wrong CRC (%d but %D)" %(crc,crcx)
+            return -1
+        else:
+	    pm25 = (ord(response[12])<<8) + ord(response[13])
+            # print "PM 2.5 = %d" % pm25
+            return pm25
     except Exception, e:
 	print e
 	ser.close()
@@ -55,10 +66,10 @@ def pm25_close(ser):
 
 if __name__ == "__main__":
     ser = pm25_init()
-    time.sleep(1)
+    time.sleep(2)
     print "PM2.5 = %d" % pm25_read(ser)
-    time.sleep(1)
+    time.sleep(2)
     print "PM2.5 = %d" % pm25_read(ser)
-    time.sleep(1)
+    time.sleep(2)
     print "PM2.5 = %d" % pm25_read(ser)
     pm25_close(ser)
